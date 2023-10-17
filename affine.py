@@ -77,7 +77,7 @@ def convert_affine_ab(text,a,b):
         if not char in punc:
             
             index = de.index(char)
-            value = (a*(index-b))%26
+            value = (inverse_a(a,26)*(index-b))%26
             new_str+=de[value]
         else:
             new_str+=char
