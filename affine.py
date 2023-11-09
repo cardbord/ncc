@@ -36,7 +36,7 @@ def convert_from_affine(text):
     
     de = ascii_lowercase
     possible_a = [1,3,5,7,9,11,13,15,17,19,21,23,25]
-    punc = [' ','.',';',':',',','-','/','?','#',"'",'"','’']
+    punc = [' ','.',';',':',',','-','/','?','#',"'",'"','’','(',')','!']
     for a in possible_a:
         for b in range(1,27):
             if inverse_a(a,26) != 0:
