@@ -6,23 +6,22 @@ def solve(arr,key):
     keylist = list(key)
     for x in range(len(arr)):
         for i in range(len(arr[x])):
-            print(f'solving with key {keylist}, ')
-            result+= arr[x][int(keylist[i])-1]
+            result+= arr[x][int(keylist[i])]
 
     return result
 
 def bruteforce(columned_array, keylength):
-    k = 0
+    print("started bruteforce")
     result_array = []
     key=""
     for n in range(keylength):
-        key+=str(n+1)
+        key+=str(n)
     permutations_of_key = [''.join(p) for p in permutations(key)]
-    print(permutations_of_key)
+    
+    
+    
 
     for n in permutations_of_key:
-        
-
         result = solve(columned_array, n)
         result_array.append(result+'\n')
 
@@ -62,7 +61,8 @@ def main():
         print(columned_array)
 
         bruteforce(columned_array,guessed_key_length)
-    
+
+
 
     
 if __name__ == '__main__':
