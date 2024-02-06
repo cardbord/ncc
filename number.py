@@ -3,13 +3,19 @@ b = int(input("Enter len>>>"))
 a = list(a)
 nlist = {}
 
+def concat_arr_terms(arr,start,stop):
+    total = ""
+    for i in range(start,stop):
+        total+=str(arr[i])
+    return total
+
 for i in range(0,len(a),b):
-    if not str(a[i])+str(a[i+1]) in nlist:
-        nlist[str(a[i])+str(a[i+1])] = 0
+    if not concat_arr_terms(a,i,i+b) in nlist:
+        nlist[concat_arr_terms(a,i,i+b)] = 0
 
 for xvar in nlist:
     for i in range(0,len(a),b):
-        if str(a[i])+str(a[i+1]) == xvar:
+        if concat_arr_terms(a,i,i+b) == xvar:
             nlist[f"{xvar}"]+=1
 
 
