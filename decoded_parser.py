@@ -1,4 +1,4 @@
-import PyDictionary
+
 
 def count_standard_english(text):
      counter = 0
@@ -21,15 +21,15 @@ def count_standard_nospace(line):
      
      return counter
 
-def find_as_dict(text): #will implement in decoded_parser.py later, this could be really handy for checking solutions
-     pdict = PyDictionary()
-     
-     wcount = 0
-     for word in text.split(' '):
-     
-          if pdict.meaning(word,True) != None:
-               wcount+=1
-     return wcount
+#def find_as_dict(text): #will implement in decoded_parser.py later, this could be really handy for checking solutions
+#     pdict = PyDictionary()
+#     
+#     wcount = 0
+#     for word in text.split(' '):
+#     
+#          if pdict.meaning(word,True) != None:
+#               wcount+=1
+#     return wcount
      
 
 

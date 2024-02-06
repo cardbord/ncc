@@ -1,17 +1,27 @@
 from string import ascii_lowercase
-from PyDictionary import PyDictionary
 from time import sleep
 from math import gcd
 
 def inverse_a(x,m):
-    possible_a = [a for a in range(1,27) if gcd(a,26)==1]
-    for i in possible_a:
+    for i in [a for a in range(1,27) if gcd(a,26)==1]:
         if (x*i)%m==1:
                 return i
     return 0
 
+def inverse_a_simplified(a,m):
+    for d in range(1,27):
+
+        if gcd(d, 26) == 1: # gcd is the same as hcf
+
+            if a*d % m == 1: # mod, in python, is %
+                
+                return d
+    
+    return None # no values found!
+
 
 def find_as_dict(text): #will implement in decoded_parser.py later, this could be really handy for checking solutions
+                from PyDictionary import PyDictionary
                 pdict = PyDictionary()
                 new_ss = remove_punc(text)
                 wcount = 0
