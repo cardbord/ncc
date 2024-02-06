@@ -16,7 +16,7 @@ for i in range(0,len(a),b):
 for xvar in nlist:
     for i in range(0,len(a),b):
         if concat_arr_terms(a,i,i+b) == xvar:
-            nlist[f"{xvar}"]+=1
+            nlist[xvar]+=1
 
 
 print(nlist)
