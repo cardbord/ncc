@@ -1,4 +1,10 @@
+from time import sleep
 
+def remove_punc(text):
+     punc = ['.',';',':',',','-','/','?','#']
+     for p in punc:
+          text = text.replace(p,'')
+     return text
 
 def count_standard_english(text):
      counter = 0
@@ -21,15 +27,18 @@ def count_standard_nospace(line):
      
      return counter
 
-#def find_as_dict(text): #will implement in decoded_parser.py later, this could be really handy for checking solutions
-#     pdict = PyDictionary()
-#     
-#     wcount = 0
-#     for word in text.split(' '):
-#     
-#          if pdict.meaning(word,True) != None:
-#               wcount+=1
-#     return wcount
+def find_as_dict(text):
+     from PyDictionary import PyDictionary
+     pdict = PyDictionary()
+     new_ss = remove_punc(text)
+     wcount = 0
+     for word in new_ss.split(' '):
+     
+          if pdict.meaning(word,True) != None:
+               wcount+=1
+     if wcount >= len(new_ss.split(' '))//2:
+          print('POSSIBILIY')
+          sleep(0.5)
      
 
 

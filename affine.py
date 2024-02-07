@@ -19,21 +19,6 @@ def inverse_a_simplified(a,m):
     
     return None # no values found!
 
-
-def find_as_dict(text): #will implement in decoded_parser.py later, this could be really handy for checking solutions
-                from PyDictionary import PyDictionary
-                pdict = PyDictionary()
-                new_ss = remove_punc(text)
-                wcount = 0
-                for word in new_ss.split(' '):
-                    
-                    if pdict.meaning(word,True) != None:
-                        wcount+=1
-                if wcount >= len(new_ss.split(' '))//2:
-                    print('POSSIBILIY')
-                    sleep(0.5)
-
-
 def remove_punc(text):
     punc = ['.',';',':',',','-','/','?','#']
     for p in punc:
