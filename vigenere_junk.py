@@ -17,10 +17,10 @@ def repEngVigenere(key:keyboard.Key):
         ctrl.press(keyboard.Key.ctrl)
         ctrl.tap("x")
         ctrl.release(keyboard.Key.ctrl)
-        sleep(0.5)
+        sleep(0.2)
         text = paste()
     
-        plaintext = decrypt(text.replace(" ",""),v_key)
+        plaintext = decrypt(text.replace(" ","").upper(),v_key)
         ctrl.type(plaintext)
     
     elif key == keyboard.Key.delete:
@@ -31,11 +31,11 @@ def repEngVigenere(key:keyboard.Key):
         ctrl.press(keyboard.Key.ctrl)
         ctrl.tap("x")
         ctrl.release(keyboard.Key.ctrl)
-        sleep(0.5)
+        sleep(0.2)
         text = paste()
         
-        ciphertext = encrypt(text.replace(" ",""),v_key)
-        ctrl.type(ciphertext)
+        ciphertext = encrypt(text.replace(" ","").upper(),v_key)
+        ctrl.type(ciphertext.lower())
         
         
     
