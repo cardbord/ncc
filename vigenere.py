@@ -2,6 +2,8 @@ alpha = "abcdefghijklmnopqrstuvwxyz" #we alpha instead, since %26 returns the al
 
 def keycircle(key,len_text):
     circled_key = ""
+    if len_text < len(key):
+        return key[:len_text].upper()
     for i in range(0,len_text,len(key)):
         circled_key+=key
     if len(circled_key) > len_text:
@@ -9,8 +11,13 @@ def keycircle(key,len_text):
         print(len(circled_key),len_text)
     return circled_key.upper()
 
+def b(key,position):
+   return key[position]
+
+
 #so we convert to ascii first?
 def encrypt(text,key):
+    
     text=text.upper()
     ciphertext=""
     key = keycircle(key,len(text))
