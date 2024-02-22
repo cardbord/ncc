@@ -1,10 +1,28 @@
-morse_alpha_dict = {"a": ".-" , "b": "...-" , "c": "-.-." , "d": "-.." , "e": "." , "f": "..-." , "g": "--." , "h": "...." , "i": ".." , "j": ".---" , "k": "-.-" , "l": ".-.." , "m": "--" , "n": "-." , "o": "---" , "p": ".--." , "q": "--.-" , "r": ".-." , "s": "..." , "t": "-" , "u": "..-", "v": "...-" , "w": ".--" , "x": "-..-" , "y": "-.--" , "z": "--.."}
+morse_alpha_dict = {
 
-def find_in_dict(mval):
-    a = [a for a in morse_alpha_dict]
-    for i in a:
-        if morse_alpha_dict[i] == mval:
-            return i
+                    #ALPHABET
+                    "a": ".-" , "b": "...-" , "c": "-.-." , "d": "-.." , "e": "." , "f": "..-." , "g": "--." , "h": "...." , "i": ".." , "j": ".---" , "k": "-.-" , "l": ".-.." , "m": "--" , "n": "-." , "o": "---" , "p": ".--." , "q": "--.-" , "r": ".-." , "s": "..." , "t": "-" , "u": "..-", "v": "...-" , "w": ".--" , "x": "-..-" , "y": "-.--" , "z": "--..",
+                    
+                    #NUMBERS
+                    '0': '-----',  '1': '.----',  '2': '..---',
+                    '3': '...--',  '4': '....-',  '5': '.....',
+                    '6': '-....',  '7': '--...',  '8': '---..',
+                    '9': '----.',
+                    
+                    #SYMBOLS
+                    ', ': '--..--',
+                    '?': '..--..',
+                    '(': '-.--.',
+                    ')': '-.--.-',                
+                    '=': '-...-',
+                    '+':'.-.-.',
+                    '!':'-.-.--',
+                    ':':'---...',
+                    ';':'-.-.-.'
+                    }
+alpha_morse_dict = {value:key for key,value in morse_alpha_dict.items()}
+
+
     
 
 def encode(plaintext:str):
@@ -20,4 +38,4 @@ def decode(morse_text:str):
     plaintext = ""
     for char_group in morse_text.split("/"):
         for char in char_group.split(" "):
-            plaintext+=find_in_dict(char)
+            plaintext+=alpha_morse_dict[char] + " "
