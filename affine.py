@@ -30,8 +30,8 @@ def convert_from_affine(text):
     text_arr = []
     
     de = ascii_lowercase
-    possible_a = [1,3,5,7,9,11,13,15,17,19,21,23,25]
-    punc = [' ','.',';',':',',','-','/','?','#',"'",'"','’','(',')','!']
+    possible_a = [1,3,5,7,9,11,13,15,17,19,21,23,25] #all possible a values
+    punc = [' ','.',';',':',',','-','/','?','#',"'",'"','’','(',')','!'] #list of all punctuation to remove from the ciphertext
     for a in possible_a:
         for b in range(1,27):
             if inverse_a(a,26) != 0:
@@ -55,7 +55,7 @@ def convert_from_affine(text):
                 pass
     if len(text_arr) > 0:
         
-        with open(f'{text[:3]}.decoded','w') as writable:
+        with open(f'{text[:3]}.decoded','w') as writable: #writing possible answers to a file, which we parse through later
             writable.writelines(text_arr)
             print(f'{writable.name} written.')
                    
@@ -65,12 +65,11 @@ def convert_from_affine(text):
 def convert_affine_ab(text,a,b):
     text=text.lower()
     new_str = ''
-    de = ascii_lowercase
+    de = ascii_lowercase #ascii_lowercase is just the entire set of the alphabet in lowercase
     punc = [' ','.',';',':',',','-','/','?','#',"'",'"','’']
     for char in text:
         
         if not char in punc:
-            
             index = de.index(char)
             value = (inverse_a(a,26)*(index-b))%26
             new_str+=de[value]
