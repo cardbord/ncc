@@ -1,5 +1,27 @@
 from math import *
-import pyperclip
+import pyperclip, base64, sys
+
+def add_b64(text:str):
+    if len(text) % 4 != 0: #trimmed b64
+        nexthighest = (len(text)//4 * 4) + 4
+        text = text + '='*(nexthighest-len(text))
+        return text
+    else:
+        return text
+
+
+def conv_b64(text:str):
+    if text.isprintable() or text.isalpha() or text.isnumeric(): #is b64
+        text=add_b64(text)
+    
+        t=text.encode('ascii')
+        deT = base64.b64decode(t)
+        t=deT.decode('ascii')
+        return t
+
+    else:
+        return text
+    
 
 def keycircle(key,len_text):
     circled_key = ""
@@ -9,79 +31,111 @@ def keycircle(key,len_text):
         circled_key+=key
     if len(circled_key) > len_text:
         circled_key = circled_key[:len_text]
-        print(len(circled_key),len_text)
     return circled_key.lower()
 
-print('\n')
-text = input("text>>>")
-if text=='':
-    text=pyperclip.paste()
-key = input("key>>>")
 
-eq = input("polynomial (in terms of 'x')>>>")
-if eq != '':
-    adV = []
-    for _ in range(len(text)):
-        v = eval(eq.replace('x',str(_)))
-        _v = (floor(100*v) if isinstance(v,float) else v)
-        _v = bin(_v).replace('0b','')
-        if len(_v) > 7:
-            _v = _v[:7]
-        adV.append(_v)
 
-key = keycircle(key,len(text))
-
-print(text,key)
-
-aT = [bin(ord(c)).replace('0b','') for c in list(text)]
-aK = [(bin(ord(c)).replace('0b',''))[::-1] for c in list(key)]
-
-if eq != '':
-    f=int(aK[len(aK)-1],2)
-    for val in range(len(aK)):
-        f = -int(aK[len(aK)-1-val]) * f
-        print(f)
-        if val % 2 == 0:
-            sn = bin(abs(int(aK[val],2) + int(adV[val],2) + f)).replace('0b','')
-        else:
-            sn = bin(abs(int(aK[val],2) * (int(adV[val],2) + f))).replace('0b','')
-        aK[val] = sn[len(sn)-7:]
-
-for sW in range(len(aT)):
-    if len(aT[sW]) < 7:
-        aT[sW] = ''.join(['0' for _ in range((7-len(aT[sW])))]) + aT[sW]
+    
+def NORPH(text:str,key:str,eq:str) -> str:
+    _temp = add_b64(text)
+    _temp = _temp.encode('ascii')
+    doNOTRETURNb64=False
+    try:
         
-for sW in range(len(aK)):
-    if len(aK[sW]) < 7:
-        aK[sW] = ''.join(['0' for _ in range((7-len(aK[sW])))]) + aK[sW]
-        
+        if base64.b64encode(base64.b64decode(_temp)) == _temp: #isbase64
+            text=conv_b64(text)
+            doNOTRETURNb64 = True
+    except:
+        pass
 
-cT = []
-for n in range(len(aT)):
-    s = aT[n]
-    k = aK[n]
-    indT = ''
-    if len(s) > len(k):
-        print(s,k, text[n], key[n])
-    for char in range(len(s)):
-        
-        if s[char] != k[char]: #XOR gate (triggers if not 00, 11)
-            indT+='1'
-        else:
-            indT+='0'
-    cT.append(indT)
+
+
+    if eq != '':
+        adV = []
+        for _ in range(len(text)):
+            v = eval(eq.replace('x',str(_)))
+            _v = (floor(100*v) if isinstance(v,float) else v)
+            _v = bin(_v).replace('0b','')
+            if len(_v) > 7:
+                _v = _v[:7]
+            adV.append(_v)
+
+    key = keycircle(key,len(text))
+
     
 
-print(aT,aK)
-print(' ')
-print(cT)
+    bT = [bin(ord(c)).replace('0b','') for c in list(text)]
+    bK = [(bin(ord(c)).replace('0b',''))[::-1] for c in list(key)]
 
-for char in cT:
-    f = int(char, 2)
-    bA = f.to_bytes().decode()
-    print(bA,end='')
+    if eq != '':
+        f=int(bK[len(bK)-1],2)
+        for val in range(len(bK)):
+            f = -int(bK[len(bK)-1-val]) * (ceil(f/10) + int(adV[val],2)) 
+            
+            if val % 2 == 0:
+                sn = bin(abs(int(bK[val],2) + int(adV[val],2) + f)).replace('0b','')
+            else:
+                sn = bin(abs(int(bK[val],2) * (int(adV[val],2) + f))).replace('0b','')
+            bK[val] = sn[len(sn)-7:]
 
-kl = ''.join([int(a,2).to_bytes().decode() for a in cT])
-pyperclip.copy(kl)
-print('\n')
-print(kl)
+    for sW in range(len(bT)):
+        if len(bT[sW]) < 7:
+            bT[sW] = ''.join(['0' for _ in range((7-len(bT[sW])))]) + bT[sW]
+            
+    for sW in range(len(bK)):
+        if len(bK[sW]) < 7:
+            bK[sW] = ''.join(['0' for _ in range((7-len(bK[sW])))]) + bK[sW]
+            
+
+    cT = []
+    for n in range(len(bT)):
+        s = bT[n]
+        k = bK[n]
+        indT = ''
+        if len(s) > len(k):
+            print(s,k, text[n], key[n])
+        for char in range(len(s)):
+            
+            if s[char] != k[char]: #XOR gate (triggers if not 00, 11)
+                indT+='1'
+            else:
+                indT+='0'
+        cT.append(indT)
+        
+
+    kl = ''.join([int(a,2).to_bytes().decode() for a in cT])
+
+    
+    
+
+
+
+    if doNOTRETURNb64 == False:
+        kl=kl.encode('ascii')
+        kl=base64.b64encode(kl)
+        kl=kl.decode('ascii')
+        kl=kl.replace('=','')
+
+    return kl
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 3:
+
+        print('\n')
+        text = input("text>>>")
+
+
+        if text=='':
+            text=pyperclip.paste()
+        key = input("key>>>")
+        eq = input("polynomial (in terms of 'x')>>>")
+    else:
+        text = sys.argv[1]
+        key = sys.argv[2]
+        eq = sys.argv[3] if len(sys.argv) > 4 else ''
+
+
+    kl = NORPH(text,key,eq)
+    print(kl)
+    pyperclip.copy(kl)
