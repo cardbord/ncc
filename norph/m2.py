@@ -137,7 +137,6 @@ def s():
     
     mes = inp_opts.get('mesg')
     print("SENDING " + mes)
-    time.sleep(3)
     if mes:
         if HOSTING:
             send(mes,conn,'boxo','tan(x**2)')
@@ -186,36 +185,36 @@ def coll2():
             this = NORPH(dec,'boxo','tan(x**2)')
             
             
-            time.sleep(5)
+            
             
             if this.find('checksum') == -1:
                 conn.send(this.encode())
                 
-                time.sleep(3)
+                
             else:
                 outp=NORPH(data.decode(),'boxo','tan(x**2)')
                 outp=outp[:len(outp)-2]
                 msg_array.append(outp)
                 print('logging')
-                time.sleep(3)
+                
         else:
             
             data = conn.recv(1024)
             dec = data.decode()
             this = NORPH(dec,'mngtrpail','abs(x**3 - 3*x**2 - 63)')
             
-            time.sleep(5)
+            
             
             if NORPH(data.decode(),'mngtrpail','abs(x**3 - 3*x**2 - 63)').find('checksum:') == -1:
                 conn.send(NORPH(data.decode(),'mngtrpail','abs(x**3 - 3*x**2 - 63)').encode())
                 print('sending again:'+ data.decode())
-                time.sleep(3)
+                
             else:
                 outp=NORPH(data.decode(),'mngtrpail','abs(x**3 - 3*x**2 - 63)')
                 outp=outp[:len(outp)-2]
                 msg_array.append(outp)
                 print('logging')
-                time.sleep(3)
+                
 
     
 handler.add(M)
