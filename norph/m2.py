@@ -91,18 +91,6 @@ def server_program():
 
 
 
-
-
-
-pygame.init()
-a = pygame.display.get_desktop_sizes()[0]
-dis = pygame.display.set_mode(a)
-
-global msg_array
-msg_array = []
-
-
-
 serv = input("Hosting? ").lower()
 if serv == 'y' or serv == 'yes' or serv.startswith('y'):
     HOSTING=True
@@ -126,6 +114,18 @@ else:
     conn.connect((host, port))  # connect to the server
 
 
+pygame.init()
+a = pygame.display.get_desktop_sizes()[0]
+dis = pygame.display.set_mode(a)
+
+global msg_array
+msg_array = []
+
+
+
+
+
+
 
 handler=Handler()
 
@@ -147,7 +147,7 @@ def _(_):
     pass
 
 
-M = GUIobj([0,0],a,'message')
+M = GUIobj([0,0],(scale_to_window(a[0]), scale_to_window(a[1])),'message')
 M.move_window = _
 
 
