@@ -134,6 +134,7 @@ _h = GUIobj([0,0],[10,10],'_')
 
 
 def s():
+    global msg_array
     inp_opts = handler.collate_textinput_inputs()
     
     mes = inp_opts.get('mesg')
@@ -144,6 +145,44 @@ def s():
         else:
             send(mes,conn,'mngtrpail','abs(x**3 - 3*x**2 - 63)')
     
+        msg_array.append(mes)
+                
+        if len(msg_array) > 10:
+            msg_array = msg_array[:10]
+        
+        c2 = [None]*(10-len(msg_array)) if len(msg_array) < 10 else []
+        
+        c2.extend(
+            [
+                Text(
+                    [0,0],
+                    msg_array[i],
+                    TextType.h3
+                ) 
+                for i in range(len(msg_array))
+                
+            ]
+        )
+
+
+        mesgbox = TextInput([0,0],'',None,None,'mesg')
+        tbut = Button([0,0],'Send',None,None,s)
+
+        _this = DisplayColumns([
+            mesgbox, tbut
+        ])
+
+        c2.append(_this)
+
+        
+
+
+        M.content = [
+            DisplayRows(c2)
+        ]
+        handler.GUIobjs_array[0]=M
+
+
 def _(_):
     pass
 
@@ -151,13 +190,13 @@ def _(_):
 M = GUIobj([0,0],( a[0]//_h._SIZE_SF, a[1]//_h._SIZE_SF ),'message')
 M.move_window = _
 
-
 mesgbox = TextInput([0,0],'',None,None,'mesg')
 tbut = Button([0,0],'Send',None,None,s)
 
 USE = DisplayColumns([
             mesgbox, tbut
         ])
+
 
 
 
@@ -179,6 +218,7 @@ M.add_content(
 )
 
 def coll2():
+    global msg_array
     while True:
         if HOSTING:
             data = conn.recv(1024)
@@ -194,9 +234,31 @@ def coll2():
                 
             else:
                 outp=NORPH(data.decode(),'boxo','tan(x**2)')
-                outp=outp[:len(outp)-2]
+                outp=outp[:outp.find('checksum:')]
                 msg_array.append(outp)
-                print('logging')
+                
+                if len(msg_array) > 10:
+                    msg_array = msg_array[:10]
+                
+                c2 = [None]*(10-len(msg_array)) if len(msg_array) < 10 else []
+                
+                c2.extend(
+                    [
+                        Text(
+                            [0,0],
+                            msg_array[i],
+                            TextType.h3
+                        ) 
+                        for i in range(len(msg_array))
+                        
+                    ]
+                )
+                c2.append(USE)
+                M.content = [
+                    DisplayRows(c2)
+                ]
+                handler.GUIobjs_array[0]=M
+                
                 
         else:
             
@@ -212,9 +274,31 @@ def coll2():
                 
             else:
                 outp=NORPH(data.decode(),'mngtrpail','abs(x**3 - 3*x**2 - 63)')
-                outp=outp[:len(outp)-2]
+                outp=outp[:outp.find('checksum:')]
                 msg_array.append(outp)
-                print('logging')
+                
+                if len(msg_array) > 10:
+                    msg_array = msg_array[:10]
+                
+                c2 = [None]*(10-len(msg_array)) if len(msg_array) < 10 else []
+                
+                c2.extend(
+                    [
+                        Text(
+                            [0,0],
+                            msg_array[i],
+                            TextType.h3
+                        ) 
+                        for i in range(len(msg_array))
+                        
+                    ]
+                )
+                c2.append(USE)
+                M.content = [
+                    DisplayRows(c2)
+                ]
+                handler.GUIobjs_array[0]=M
+                
                 
 
     
