@@ -130,6 +130,7 @@ msg_array = []
 handler=Handler()
 
 
+_h = GUIobj([0,0],[10,10],'_')
 
 
 def s():
@@ -147,7 +148,7 @@ def _(_):
     pass
 
 
-M = GUIobj([0,0],(scale_to_window(a[0]), scale_to_window(a[1])),'message')
+M = GUIobj([0,0],( a[0]//_h._SIZE_SF, a[1]//_h._SIZE_SF ),'message')
 M.move_window = _
 
 
