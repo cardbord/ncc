@@ -53,7 +53,7 @@ def main():
                     #          print(f'Line of interest with a score of {score}: {line}')
                     #else:
                     score = count_standard_nospace(line)
-                    if score > 6:
+                    if score > 15:
                          print(f'Line of interest with a score of {score}: {line}')
      except FileNotFoundError:
           print("this file does not exist.")
