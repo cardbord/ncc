@@ -386,7 +386,19 @@ class DisplayColumns(GUIbaseClass):
                                 ]
 
 
-
+                        case 3: #right
+                            if isinstance(self.content[itemid], Button):
+                            
+                                self.content[itemid]=Button(
+                                    [
+                                        self.parent_window_size[0]-self.parent_pos[0],
+                                        self.parent_pos[1]
+                                    ],
+                                    self.content[itemid].text_overlay,
+                                    self.content[itemid]._buttonblocksize,
+                                    self.content[itemid].highlighted_colour,
+                                    self.content[itemid].callback
+                                    ).anchor(self.content[itemid]._anchor)
 
 
                         case _:
@@ -539,7 +551,7 @@ class TextInput(GUIbaseClass):
         #render within display method
         self._small = small
         if not self._small:
-            self.user_text_width = max(200*self._SIZE_SF,self.font.size(self.user_text)[0]+self._pipeline_size) #chooses between 200px (at 1080p) or the user text + the size of the pipeline
+            self.user_text_width = max(1440*self._SIZE_SF,self.font.size(self.user_text)[0]+self._pipeline_size) #chooses between 200px (at 1080p) or the user text + the size of the pipeline
         else:
             self.user_text_width = self.font.size(self.user_text)[0]+self._pipeline_size #only use small if text is already there
         self.user_text_rect = pygame.Rect(self.pos[0]+self.text_box_width+10*self._SIZE_SF,self.pos[1],self.user_text_width,__size_text[1])
@@ -564,7 +576,7 @@ class TextInput(GUIbaseClass):
         self.user_text = (self.user_text[:self.current_userinp_index]+newletter+self.user_text[self.current_userinp_index:] if self.current_userinp_index!=len(self.user_text)-1 else "") if len(self.user_text)>0 else newletter
         #inserts the character into the middle of the current position (you can move through the text with arrow keys)
         if not self._small:
-            self.user_text_width = max(200*self._SIZE_SF,self.font.size(self.user_text)[0]+self._pipeline_size) #chooses between 200px (at 1080p) or the user text + the size of the pipeline
+            self.user_text_width = max(1440*self._SIZE_SF,self.font.size(self.user_text)[0]+self._pipeline_size) #chooses between 200px (at 1080p) or the user text + the size of the pipeline
         else:
             self.user_text_width = self.font.size(self.user_text)[0]+self._pipeline_size #only use small if text is already there
         self.user_text_rect.w = self.user_text_width
@@ -573,7 +585,7 @@ class TextInput(GUIbaseClass):
     def backspace(self): #removes a character at the current pipeline position
         self.user_text = self.user_text[:self.current_userinp_index-1] + self.user_text[self.current_userinp_index+1:] 
         if not self._small:
-            self.user_text_width = max(200*self._SIZE_SF,self.font.size(self.user_text)[0]+self._pipeline_size) #chooses between 200px (at 1080p) or the user text + the size of the pipeline
+            self.user_text_width = max(1440*self._SIZE_SF,self.font.size(self.user_text)[0]+self._pipeline_size) #chooses between 200px (at 1080p) or the user text + the size of the pipeline
         else:
             self.user_text_width = self.font.size(self.user_text)[0]+self._pipeline_size #only use small if text is already there
         self.user_text_rect.w = self.user_text_width #shortens the user text width of the user text rect
