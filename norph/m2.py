@@ -5,7 +5,8 @@ import socket
 import threading
 import random
 
-import time
+
+
 def create_checksum(num):
     a = random.randrange(1,num//2)
     return f'{num-a}+{a}={num}'
@@ -29,6 +30,7 @@ def receive(data,connection:socket.socket,key,eq):
         return '', False
 
 def send(data:str,connection:socket.socket,key,eq):
+    data=f' {USERNAME}username:'+data
     data+=f'checksum:{create_checksum(random.randrange(100,10000))}'
     _d = NORPH(data,key,eq).encode()
     connection.send(_d)
@@ -37,6 +39,8 @@ def send(data:str,connection:socket.socket,key,eq):
 def client_program():
      host = input("What is the host name?")  # as both code is running on same pc
      port = int(input("What is the server's port?"))  # socket server port number
+     
+     username = input("Enter username ")
 
 
 
@@ -113,6 +117,7 @@ else:
     conn = socket.socket()  # instantiate
     conn.connect((host, port))  # connect to the server
 
+USERNAME = input("Enter username ")
 
 pygame.init()
 a = pygame.display.get_desktop_sizes()[0]
@@ -123,7 +128,8 @@ msg_array = []
 
 
 
-
+def _(_):
+    pass
 
 
 
@@ -133,40 +139,61 @@ handler=Handler()
 _h = GUIobj([0,0],[10,10],'_')
 
 
-def s():
+def s(hasbeenEntered:bool=False):
     global msg_array
     inp_opts = handler.collate_textinput_inputs()
     
-    mes = inp_opts.get('mesg')
+    mes:str = inp_opts.get('mesg')
+    
+    if hasbeenEntered:
+        mes=mes[:len(mes)-1]
     print("SENDING " + mes)
     if mes:
+        
         if HOSTING:
             send(mes,conn,'boxo','tan(x**2)')
         else:
             send(mes,conn,'mngtrpail','abs(x**3 - 3*x**2 - 63)')
     
-        msg_array.append(mes)
+        
                 
-        if len(msg_array) > 10:
-            msg_array = msg_array[:10]
         
-        c2 = [None]*(10-len(msg_array)) if len(msg_array) < 10 else []
         
+        
+        msg_array.append((' '+USERNAME,mes))
+        
+        
+        if len(msg_array) > 8:
+            msg_array = msg_array[len(msg_array)-8:]
+        
+        addval = [None]*(8-len(msg_array)) if len(msg_array) < 8 else []
+        c2 = []
         c2.extend(
             [
-                Text(
-                    [0,0],
-                    msg_array[i],
-                    TextType.h3
-                ) 
+                DisplayRows([
+                    
+                    Text(
+                        [0,0],
+                        msg_array[i][0],
+                        TextType.p,
+                        font='Segoe UI'
+                    ).anchor(Anchor.LEFT),
+                    Text(
+                        [0,0],
+                        msg_array[i][1],
+                        TextType.h2,
+                        font='Segoe UI'
+                    ).anchor(Anchor.LEFT),
+                    None
+                    
+                ])
                 for i in range(len(msg_array))
-                
             ]
         )
-
+        c2.extend(addval)
 
         mesgbox = TextInput([0,0],'',None,None,'mesg')
-        tbut = Button([0,0],'Send',None,None,s)
+        tbut = Button([0,0],' >',None,None,s)
 
         _this = DisplayColumns([
             mesgbox, tbut
@@ -176,22 +203,23 @@ def s():
 
         
 
-
-        M.content = [
+        _a = GUIobj([0,0],( a[0]//_h._SIZE_SF, a[1]//_h._SIZE_SF ),'message')
+        _a.clickable_cross.callback = CLOSE
+        _a.move_window = _
+        _a.add_content(
             DisplayRows(c2)
-        ]
-        handler.GUIobjs_array[0]=M
+        )
+        
+        handler.GUIobjs_array[0]=_a
 
 
-def _(_):
-    pass
 
 
 M = GUIobj([0,0],( a[0]//_h._SIZE_SF, a[1]//_h._SIZE_SF ),'message')
 M.move_window = _
 
 mesgbox = TextInput([0,0],'',None,None,'mesg')
-tbut = Button([0,0],'Send',None,None,s)
+tbut = Button([0,0],' >',None,None,s)
 
 USE = DisplayColumns([
             mesgbox, tbut
@@ -202,8 +230,6 @@ USE = DisplayColumns([
 
 M.add_content(
     DisplayRows([
-        None,
-        None,
         None,
         None,
         None,
@@ -235,29 +261,50 @@ def coll2():
             else:
                 outp=NORPH(data.decode(),'boxo','tan(x**2)')
                 outp=outp[:outp.find('checksum:')]
-                msg_array.append(outp)
+                uindex = outp.find('username:')
+                usern = outp[:uindex]
+                outp = outp[uindex:].replace('username:','')
+                msg_array.append((usern,outp))
                 
-                if len(msg_array) > 10:
-                    msg_array = msg_array[:10]
                 
-                c2 = [None]*(10-len(msg_array)) if len(msg_array) < 10 else []
+                if len(msg_array) > 8:
+                    msg_array = msg_array[len(msg_array)-8:]
                 
+                addval = [None]*(8-len(msg_array)) if len(msg_array) < 8 else []
+                c2 = []
                 c2.extend(
                     [
-                        Text(
-                            [0,0],
-                            msg_array[i],
-                            TextType.h3
-                        ) 
-                        for i in range(len(msg_array))
+                        DisplayRows([
+                            
+                            Text(
+                                [0,0],
+                                msg_array[i][0],
+                                TextType.p,
+                                font='Segoe UI'
+                            ).anchor(Anchor.LEFT),
+                            Text(
+                                [0,0],
+                                msg_array[i][1],
+                                TextType.h2,
+                                font='Segoe UI'
+                            ).anchor(Anchor.LEFT),
+                            None
+                            
+                        ]) for i in range(len(msg_array))
                         
                     ]
                 )
+                c2.extend(addval)
                 c2.append(USE)
-                M.content = [
+                
+                _a = GUIobj([0,0],( a[0]//_h._SIZE_SF, a[1]//_h._SIZE_SF ),'message')
+                _a.clickable_cross.callback = CLOSE
+                _a.move_window = _
+                _a.add_content(
                     DisplayRows(c2)
-                ]
-                handler.GUIobjs_array[0]=M
+                )
+                handler.GUIobjs_array[0] = _a
+                print(handler.GUIobjs_array)
                 
                 
         else:
@@ -275,29 +322,48 @@ def coll2():
             else:
                 outp=NORPH(data.decode(),'mngtrpail','abs(x**3 - 3*x**2 - 63)')
                 outp=outp[:outp.find('checksum:')]
-                msg_array.append(outp)
+                uindex = outp.find('username:')
+                usern = outp[:uindex]
+                outp = outp[uindex:].replace('username:','')
+                msg_array.append((usern,outp))
                 
-                if len(msg_array) > 10:
-                    msg_array = msg_array[:10]
                 
-                c2 = [None]*(10-len(msg_array)) if len(msg_array) < 10 else []
+                if len(msg_array) > 8:
+                    msg_array = msg_array[len(msg_array)-8:]
                 
+                addval = [None]*(8-len(msg_array)) if len(msg_array) < 8 else []
+                c2 = []
                 c2.extend(
                     [
-                        Text(
-                            [0,0],
-                            msg_array[i],
-                            TextType.h3
-                        ) 
+                        DisplayRows([
+                            Text(
+                                [0,0],
+                                msg_array[i][0],
+                                TextType.p,
+                                font='Segoe UI'
+                            ).anchor(Anchor.LEFT),
+                            Text(
+                                [0,0],
+                                msg_array[i][1],
+                                TextType.h2,
+                                font='Segoe UI'
+                            ).anchor(Anchor.LEFT),
+                            None
+                            
+                        ])
                         for i in range(len(msg_array))
-                        
                     ]
                 )
+                c2.extend(addval)
+                _a = GUIobj([0,0],( a[0]//_h._SIZE_SF, a[1]//_h._SIZE_SF ),'message')
+                _a.clickable_cross.callback = CLOSE
+                _a.move_window = _
                 c2.append(USE)
-                M.content = [
+                _a.add_content(
                     DisplayRows(c2)
-                ]
-                handler.GUIobjs_array[0]=M
+                )
+                handler.GUIobjs_array[0] = _a
+                print(handler.GUIobjs_array)
                 
                 
 
@@ -311,14 +377,18 @@ threading.Thread(target=coll2).start()
 
 
 while 1:
-    
-    
-
-    
-    
+    dis.fill((255,255,255))
     for event in pygame.event.get():
         handler.handle_event(event,x,y)
         x,y = pygame.mouse.get_pos()
+        match event.type:
+            case pygame.KEYDOWN:
+                match event.key:
+                    case pygame.K_ESCAPE:
+                        pygame.quit()
+                        exit()
+                    case pygame.K_RETURN:
+                        s(True)
         
     handler.display(dis)
     
