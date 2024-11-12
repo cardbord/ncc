@@ -162,7 +162,8 @@ def s(hasbeenEntered:bool=False):
             [
             DisplayColumns([
                 DisplayRows([
-                    Image(pfp.pos, pfp.image) if msg_array[i][0] == ' '+USERNAME else Image(other_pfp.pos,other_pfp.image)
+                    Image(pfp.pos, pfp.image) if msg_array[i][0] == ' '+USERNAME else Image(other_pfp.pos,other_pfp.image),
+                    None
                 ]),
                 DisplayRows([
                     
@@ -278,7 +279,8 @@ def coll2():
                     [
                     DisplayColumns([
                         DisplayRows([
-                            Image(pfp.pos, pfp.image) if msg_array[i][0] == ' '+USERNAME else Image(other_pfp.pos,other_pfp.image)
+                            Image(pfp.pos, pfp.image) if msg_array[i][0] == ' '+USERNAME else Image(other_pfp.pos,other_pfp.image),
+                            None
                         ]),
                         DisplayRows([
                             
@@ -351,7 +353,8 @@ def coll2():
                     [
                     DisplayColumns([
                         DisplayRows([
-                            Image(pfp.pos, pfp.image) if msg_array[i][0] == ' '+USERNAME else Image(other_pfp.pos,other_pfp.image)
+                            Image(pfp.pos, pfp.image) if msg_array[i][0] == ' '+USERNAME else Image(other_pfp.pos,other_pfp.image),
+                            None
                         ]),
                         DisplayRows([
                             
@@ -399,8 +402,9 @@ handler.add(M)
 
 x,y = pygame.mouse.get_pos()
 
-
-threading.Thread(target=coll2).start()
+bcr = threading.Thread(target=coll2)
+bcr.daemon=True
+bcr.start()
 
 
 while 1:
@@ -413,7 +417,9 @@ while 1:
                 match event.key:
                     case pygame.K_ESCAPE:
                         pygame.quit()
+                        bcr.daemon
                         exit()
+
                     case pygame.K_RETURN:
                         s(True)
         
