@@ -162,7 +162,7 @@ def s(hasbeenEntered:bool=False):
             [
             DisplayColumns([
                 DisplayRows([
-                    Image(pfp.pos, pfp.image) if msg_array[i][0] == USERNAME else Image(other_pfp.pos,other_pfp.image)
+                    Image(pfp.pos, pfp.image) if msg_array[i][0] == ' '+USERNAME else Image(other_pfp.pos,other_pfp.image)
                 ]),
                 DisplayRows([
                     
