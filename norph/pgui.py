@@ -897,6 +897,8 @@ class Text(GUIbaseClass): #standard text - no interaction
  #callback=None #we can treat images as buttons by attaching the same callback functionality to them!   
     
     
+
+    
 class Image(GUIbaseClass):
     def __init__(self,
                  pos,
@@ -907,6 +909,7 @@ class Image(GUIbaseClass):
         self.pos = pos
         self.callback = None
         path = str(pathlib.Path(__file__).parent)+'\\content\\' #path is constructed to cb3d/main/utils/content to grab image
+        print(path)
         if isinstance(image,pygame.Surface):
             self.image=image
         else:
@@ -933,7 +936,6 @@ class Image(GUIbaseClass):
         if scaling:
             self.image=pygame.transform.scale(self.image,scaling) #scale the image to the target resolution if scaling is present
 
-
     def display(self,dis:pygame.Surface): #display method
         dis.blit(self.image,self.pos)
 
@@ -950,7 +952,7 @@ class Image(GUIbaseClass):
             self.image_size = new_size #update image size and transform image
             self.image=pygame.transform.scale(self.image,new_size)
         
-        
+        return self
         
 
     

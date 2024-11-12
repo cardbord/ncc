@@ -4,8 +4,10 @@ from norpher import NORPH
 import socket
 import threading
 import random
-
-
+import pathlib
+import cv2
+import pickle
+import struct
 
 def create_checksum(num):
     a = random.randrange(1,num//2)
@@ -35,64 +37,6 @@ def send(data:str,connection:socket.socket,key,eq):
     _d = NORPH(data,key,eq).encode()
     connection.send(_d)
     
-    
-def client_program():
-     host = input("What is the host name?")  # as both code is running on same pc
-     port = int(input("What is the server's port?"))  # socket server port number
-     
-     username = input("Enter username ")
-
-
-
-     conn = socket.socket()  # instantiate
-     conn.connect((host, port))  # connect to the server
-
-     message = input(" -> ")  # take input
-     
-
-     while message.lower().strip() != 'bye':
-          send(message,conn,'mngtrpail','abs(x**3 - 3*x**2 + 63)')
-          data = receive(conn,'mngtrpail','abs(x**3 - 3*x**2 + 63)')  # receive response
-          
-
-
-          print('boxoserv: ' + data)  # show in terminal
-          print(' ')
-          message = input(" -> ")  # again take input
-          print(' ')
-
-     conn.close()  # close the connection
-
-
-def server_program():
-     # get the hostname
-     host = socket.gethostname()
-     print(host)
-     port = int(input("Enter port: "))  # initiate port no above 1024
-
-     server_socket = socket.socket()  # get instance
-     # look closely. The bind() function takes tuple as argument
-     server_socket.bind((host, port))  # bind host address and port together
-
-     # configure how many client the server can listen simultaneously
-     server_socket.listen(2)
-     conn, address = server_socket.accept()  # accept new connection
-     print("Connection from: " + str(address))
-     while True:
-          # receive data stream. it won't accept data packet greater than 1024 bytes
-          data = receive(conn,'boxo','tan(x**2)')
-          
-          if not data:
-               # if data is not received break
-               break
-          print("boxouser: " + str(data))
-          print(' ')
-          data = input(' -> ')
-          print(' ')
-          send(data,conn,'boxo','tan(x**2)')
-
-     conn.close()  # close the connection
-
 
 
 serv = input("Hosting? ").lower()
@@ -118,6 +62,52 @@ else:
     conn.connect((host, port))  # connect to the server
 
 USERNAME = input("Enter username ")
+
+
+pfp = None
+other_pfp = None
+profile_picture = input("Enter profile picture path: ")
+
+
+if profile_picture != '':
+    pfp = Image([0,0],profile_picture)
+    path = str(pathlib.Path(__file__).parent)+'\\content\\'
+    frame = cv2.imread(path+profile_picture)
+    
+    tosend = pickle.dumps(frame)
+    message_size = struct.pack('L',len(tosend))
+    conn.sendall(message_size+tosend)
+    
+    payload_size = struct.calcsize('=L')
+    
+    data=b''
+    while len(data) < payload_size:
+        
+        data += conn.recv(4096)
+    
+    packed_msg_size = data[:payload_size]
+    data = data[payload_size:]
+
+    
+    msg_size = struct.unpack('=L', packed_msg_size)[0]
+    # Retrieve all data based on message size
+    while len(data) < msg_size:
+        data += conn.recv(4096)    
+    
+
+    
+    frame_data = data[:msg_size]
+    data = data[msg_size:]
+    image = pickle.loads(frame_data)
+    cv2.imwrite(path+'other_pfp.jpg',image)
+    
+    
+    
+    other_pfp = Image([0,0], 'other_pfp.jpg')
+
+        
+
+
 
 pygame.init()
 a = pygame.display.get_desktop_sizes()[0]
@@ -170,6 +160,10 @@ def s(hasbeenEntered:bool=False):
         c2 = []
         c2.extend(
             [
+            DisplayColumns([
+                DisplayRows([
+                    Image(pfp.pos, pfp.image) if msg_array[i][0] == USERNAME else Image(other_pfp.pos,other_pfp.image)
+                ]),
                 DisplayRows([
                     
                     Text(
@@ -186,8 +180,16 @@ def s(hasbeenEntered:bool=False):
                     ).anchor(Anchor.LEFT),
                     None
                     
-                ])
-                for i in range(len(msg_array))
+                ]),
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None
+            ])    
+            for i in range(len(msg_array))
             ]
         )
         c2.extend(addval)
@@ -274,6 +276,10 @@ def coll2():
                 c2 = []
                 c2.extend(
                     [
+                    DisplayColumns([
+                        DisplayRows([
+                            Image(pfp.pos, pfp.image) if msg_array[i][0] == USERNAME else Image(other_pfp.pos,other_pfp.image)
+                        ]),
                         DisplayRows([
                             
                             Text(
@@ -290,8 +296,16 @@ def coll2():
                             ).anchor(Anchor.LEFT),
                             None
                             
-                        ]) for i in range(len(msg_array))
-                        
+                        ]),
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None
+                    ])    
+                    for i in range(len(msg_array))
                     ]
                 )
                 c2.extend(addval)
@@ -335,7 +349,12 @@ def coll2():
                 c2 = []
                 c2.extend(
                     [
+                    DisplayColumns([
                         DisplayRows([
+                            Image(pfp.pos, pfp.image) if msg_array[i][0] == USERNAME else Image(other_pfp.pos,other_pfp.image)
+                        ]),
+                        DisplayRows([
+                            
                             Text(
                                 [0,0],
                                 msg_array[i][0],
@@ -350,8 +369,16 @@ def coll2():
                             ).anchor(Anchor.LEFT),
                             None
                             
-                        ])
-                        for i in range(len(msg_array))
+                        ]),
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None
+                    ])    
+                    for i in range(len(msg_array))
                     ]
                 )
                 c2.extend(addval)
