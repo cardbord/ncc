@@ -187,6 +187,11 @@ def s(hasbeenEntered:bool=False):
                 None,
                 None,
                 None,
+                None,
+                None,
+                None,
+                None,
+                None
             ])    
             for i in range(len(msg_array))
             ]
@@ -297,12 +302,16 @@ def coll2():
                             
                         ]),
                         None,
-                        None,
-                        None,
-                        None,
-                        None,
-                        None,
-                        None
+None,
+None,
+None,
+None,
+None,
+None,
+None,
+None,
+None,
+None
                     ])    
                     for i in range(len(msg_array))
                     ]
@@ -370,12 +379,16 @@ def coll2():
                             
                         ]),
                         None,
-                        None,
-                        None,
-                        None,
-                        None,
-                        None,
-                        None
+None,
+None,
+None,
+None,
+None,
+None,
+None,
+None,
+None,
+None
                     ])    
                     for i in range(len(msg_array))
                     ]
