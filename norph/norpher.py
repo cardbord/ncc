@@ -37,7 +37,7 @@ def NORPH(text:str,key:str,eq:str) -> str:
         f=int(bK[len(bK)-1],2)
         for val in range(len(bK)):
             f = int((-int(bK[len(bK)-1-val]) * (ceil(f/10) + int(adV[val],2)))//((len(bK))**2+int(adV[len(adV)-1-val],2)*(f//3434)))
-            print(f)
+            
             if val % 2 == 0:
                 sn = bin(abs(int(bK[val],2) + int(adV[val],2) + f//100)).replace('0b','')
             else:
