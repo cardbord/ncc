@@ -163,7 +163,6 @@ def s(hasbeenEntered:bool=False):
             DisplayColumns([
                 DisplayRows([
                     Image(pfp.pos, pfp.image) if msg_array[i][0] == ' '+USERNAME else Image(other_pfp.pos,other_pfp.image),
-                    None
                 ]),
                 DisplayRows([
                     
@@ -188,7 +187,6 @@ def s(hasbeenEntered:bool=False):
                 None,
                 None,
                 None,
-                None
             ])    
             for i in range(len(msg_array))
             ]
@@ -280,7 +278,6 @@ def coll2():
                     DisplayColumns([
                         DisplayRows([
                             Image(pfp.pos, pfp.image) if msg_array[i][0] == ' '+USERNAME else Image(other_pfp.pos,other_pfp.image),
-                            None
                         ]),
                         DisplayRows([
                             
@@ -354,7 +351,6 @@ def coll2():
                     DisplayColumns([
                         DisplayRows([
                             Image(pfp.pos, pfp.image) if msg_array[i][0] == ' '+USERNAME else Image(other_pfp.pos,other_pfp.image),
-                            None
                         ]),
                         DisplayRows([
                             
